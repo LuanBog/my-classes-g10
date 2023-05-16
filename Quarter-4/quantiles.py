@@ -37,10 +37,10 @@ def separate_decimals(float_val):
         # There is no decimal
         return (int(splitted[0]), 0)
 
-def solve(k, denominator, given):   
-    class_ = (k * (len(given) + 1)) / denominator
+def linear_interpolation(k, denominator, given):
+    first_answer = (k * (len(given) + 1)) / denominator
     final_answer = 0
-    whole, dec = separate_decimals(class_)
+    whole, dec = separate_decimals(first_answer)
 
     letter = None
     if denominator == 4:
@@ -51,12 +51,13 @@ def solve(k, denominator, given):
         letter = 'P'
 
     print('-'*50)
+    print('LINEAR INTERPOLATION METHOD')
 
     print(f'\n{letter}{k} = k(n + 1) / {denominator}')
     print(f'{letter}{k} = {k}({len(given)} + 1) / {denominator}')
     print(f'{letter}{k} = {k}({len(given) + 1}) / {denominator}')
     print(f'{letter}{k} = {k * (len(given) + 1)} / {denominator}')
-    print(f'{letter}{k} = {class_}th')
+    print(f'{letter}{k} = {first_answer}th')
 
     if dec != 0.0:
         first_num = given[int(whole) - 1]
@@ -72,13 +73,118 @@ def solve(k, denominator, given):
     else:
         final_answer = given[int(whole) - 1]
 
-        print(f'\nSince "Q{k} class" ({class_}) is a whole number. We can just get the position and we have our final answer')
+        print(f'\nSince "Q{k} class" ({first_answer}) is a whole number. We can just get the position and we have our final answer')
         print(f'Q{k} = {final_answer}')    
+
+def general_method(k, denominator, given):
+    letter = None
+    if denominator == 4:
+        letter = 'Q'
+    elif denominator == 10:
+        letter = 'D'
+    else:
+        letter = 'P'
+
+    print('-'*50)
+    print('GENERAL METHOD')
+
+    first_answer = (k * len(given)) / denominator
+
+    print(f'\n{letter}{k} = kn / {denominator}')
+    print(f'{letter}{k} = ({k})({len(given)}) / {denominator}')
+    print(f'{letter}{k} = {k * len(given)} / {denominator}')
+    print(f'{letter}{k} = {first_answer}')
+
+    whole, dec = separate_decimals(first_answer)
+
+    if dec != 0.0:
+        next_number = int(whole) + 1
+
+        print(f'{letter}{k} = {next_number}th')
+        print(f'{letter}{k} = {given[next_number - 1]}')
+    else:
+        print(f'\n{letter}{k} = ({int(whole)}th + {int(whole+1)}th) / 2')
+        print(f'{letter}{k} = ({given[int(whole) - 1]} + {given[int(whole)]}) / 2')
+        print(f'{letter}{k} = {given[int(whole) - 1] + given[int(whole)]} / 2')
+        print(f'{letter}{k} = {(given[int(whole) - 1] + given[int(whole)]) / 2}')
+        
+def mendenhall_sincich_method(k, denominator, given):
+    first_answer = (k * (len(given) + 1)) / denominator
+    whole, dec = separate_decimals(first_answer)
+
+    letter = None
+    round_up_down_median = ''
+    if denominator == 4:
+        letter = 'Q'
+        
+        if k == 2:
+            round_up_down_median = 'median'
+        elif k < 2:
+            round_up_down_median = 'up'
+        else:
+            round_up_down_median = 'down'
+    elif denominator == 10:
+        letter = 'D'
+
+        if k == 5:
+            round_up_down_median = 'median'
+        elif k < 5:
+            round_up_down_median = 'up'
+        else:
+            round_up_down_median = 'down'
+    else:
+        letter = 'P'
+
+        if k == 50:
+            round_up_down_median = 'median'
+        elif k < 50:
+            round_up_down_median = 'up'
+        else:
+            round_up_down_median = 'down'
+
+    print('-'*50)
+    print('MENDELHALL AND SINCICH METHOD')
+
+    print(f'\n{letter}{k} = k(n + 1) / {denominator}')
+    print(f'{letter}{k} = {k}({len(given)} + 1) / {denominator}')
+    print(f'{letter}{k} = {k}({len(given) + 1}) / {denominator}')
+    print(f'{letter}{k} = {k * (len(given) + 1)} / {denominator}')
+    print(f'{letter}{k} = {first_answer}th')
+
+    if round_up_down_median == 'median':
+        print(f'\n{letter}{k} = ({int(whole)}th + {int(whole+1)}th) / 2')
+        print(f'{letter}{k} = ({given[int(whole) - 1]} + {given[int(whole)]}) / 2')
+        print(f'{letter}{k} = ({given[int(whole) - 1] + given[int(whole)]}) / 2')
+        print(f'{letter}{k} = {(given[int(whole) - 1] + given[int(whole)]) / 2}')
+    elif round_up_down_median == 'up':
+        next_number = int(whole) + 1
+
+        print(f'{letter}{k} = {next_number}th')
+        print(f'{letter}{k} = {given[next_number - 1]}')
+    else:
+        print(f'{letter}{k} = {int(whole)}th')
+        print(f'{letter}{k} = {given[int(whole) - 1]}')
+
+def solve(k, denominator, given):   
+    print('\nSelect method:')
+    method_chosen = input('[a] General Method \n[b] Mendenhall and Sinchich Method \n[c] Linear Interpolation Method\n[d] All \n> ').lower()
+
+    if method_chosen == 'a':
+        general_method(k, denominator, given)
+    elif method_chosen == 'b':
+        mendenhall_sincich_method(k, denominator, given)
+    elif method_chosen == 'd':
+        general_method(k, denominator, given)
+        mendenhall_sincich_method(k, denominator, given)
+        linear_interpolation(k, denominator, given)
+    else:
+        linear_interpolation(k, denominator, given)
 
     print('-'*50)
 
 def main():
-    given = get_given()
+    # given = get_given()
+    given = [18, 19, 22, 22, 23, 24, 27, 29, 29, 31, 33, 35, 36, 37, 41, 42, 43, 44, 45, 47]
 
     while True:
         print('\nYour given: ' + ', '.join(map(lambda x: str(x), given)))
