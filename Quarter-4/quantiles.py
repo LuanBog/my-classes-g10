@@ -27,6 +27,21 @@ def get_given():
 
     return sorted(numbered)
 
+def ordinalize(number):    
+    if number == 11 or number == 12 or number == 13:
+        return str(number ) + 'th'
+
+    last_number = str(number)[-1]
+
+    if last_number == '1':
+        return str(number) + 'st'
+    elif last_number == '2':
+        return str(number) + 'nd'
+    elif last_number == '3':
+        return str(number) + 'rd'
+    else:
+        return str(number) + 'th'
+
 def separate_decimals(float_val):
     splitted = str(float_val).split('.')
 
@@ -57,7 +72,7 @@ def linear_interpolation(k, denominator, given):
     print(f'{letter}{k} = {k}({len(given)} + 1) / {denominator}')
     print(f'{letter}{k} = {k}({len(given) + 1}) / {denominator}')
     print(f'{letter}{k} = {k * (len(given) + 1)} / {denominator}')
-    print(f'{letter}{k} = {first_answer}th')
+    print(f'{letter}{k} = {ordinalize(first_answer)}')
 
     if dec != 0.0:
         first_num = given[int(whole) - 1]
@@ -65,7 +80,7 @@ def linear_interpolation(k, denominator, given):
 
         final_answer = first_num + (dec * (second_num - first_num)) 
 
-        print(f'\n{letter}{k} = {int(whole)}th + {dec}({int(whole + 1)}th - {int(whole)}th)')
+        print(f'\n{letter}{k} = {ordinalize(int(whole))} + {dec}({ordinalize(int(whole + 1))} - {ordinalize(int(whole))})')
         print(f'{letter}{k} = {first_num} + {dec}({second_num} - {first_num})')
         print(f'{letter}{k} = {first_num} + {dec}({second_num - first_num})')
         print(f'{letter}{k} = {first_num} + {dec * (second_num - first_num)}')
@@ -100,10 +115,10 @@ def general_method(k, denominator, given):
     if dec != 0.0:
         next_number = int(whole) + 1
 
-        print(f'{letter}{k} = {next_number}th')
+        print(f'{letter}{k} = {ordinalize(next_number)}')
         print(f'{letter}{k} = {given[next_number - 1]}')
     else:
-        print(f'\n{letter}{k} = ({int(whole)}th + {int(whole+1)}th) / 2')
+        print(f'\n{letter}{k} = ({ordinalize(int(whole))} + {ordinalize(int(whole+1))}) / 2')
         print(f'{letter}{k} = ({given[int(whole) - 1]} + {given[int(whole)]}) / 2')
         print(f'{letter}{k} = {given[int(whole) - 1] + given[int(whole)]} / 2')
         print(f'{letter}{k} = {(given[int(whole) - 1] + given[int(whole)]) / 2}')
@@ -149,20 +164,20 @@ def mendenhall_sincich_method(k, denominator, given):
     print(f'{letter}{k} = {k}({len(given)} + 1) / {denominator}')
     print(f'{letter}{k} = {k}({len(given) + 1}) / {denominator}')
     print(f'{letter}{k} = {k * (len(given) + 1)} / {denominator}')
-    print(f'{letter}{k} = {first_answer}th')
+    print(f'{letter}{k} = {ordinalize(first_answer)}')
 
     if round_up_down_median == 'median':
-        print(f'\n{letter}{k} = ({int(whole)}th + {int(whole+1)}th) / 2')
+        print(f'\n{letter}{k} = ({ordinalize(int(whole))} + {ordinalize(int(whole+1))}) / 2')
         print(f'{letter}{k} = ({given[int(whole) - 1]} + {given[int(whole)]}) / 2')
         print(f'{letter}{k} = ({given[int(whole) - 1] + given[int(whole)]}) / 2')
         print(f'{letter}{k} = {(given[int(whole) - 1] + given[int(whole)]) / 2}')
     elif round_up_down_median == 'up':
         next_number = int(whole) + 1
 
-        print(f'{letter}{k} = {next_number}th')
+        print(f'{letter}{k} = {ordinalize(next_number)}')
         print(f'{letter}{k} = {given[next_number - 1]}')
     else:
-        print(f'{letter}{k} = {int(whole)}th')
+        print(f'{letter}{k} = {ordinalize(int(whole))}')
         print(f'{letter}{k} = {given[int(whole) - 1]}')
 
 def solve(k, denominator, given):   
@@ -183,8 +198,7 @@ def solve(k, denominator, given):
     print('-'*50)
 
 def main():
-    # given = get_given()
-    given = [18, 19, 22, 22, 23, 24, 27, 29, 29, 31, 33, 35, 36, 37, 41, 42, 43, 44, 45, 47]
+    given = get_given()
 
     while True:
         print('\nYour given: ' + ', '.join(map(lambda x: str(x), given)))
