@@ -52,11 +52,11 @@ def solve(k, denominator, given):
 
     print('-'*50)
 
-    print(f'\n{letter}{k} class = k(n + 1) / {denominator}')
-    print(f'{letter}{k} class = {k}({len(given)} + 1) / {denominator}')
-    print(f'{letter}{k} class = {k}({len(given) + 1}) / {denominator}')
-    print(f'{letter}{k} class = {k * (len(given) + 1)} / {denominator}')
-    print(f'{letter}{k} class = {class_}th')
+    print(f'\n{letter}{k} = k(n + 1) / {denominator}')
+    print(f'{letter}{k} = {k}({len(given)} + 1) / {denominator}')
+    print(f'{letter}{k} = {k}({len(given) + 1}) / {denominator}')
+    print(f'{letter}{k} = {k * (len(given) + 1)} / {denominator}')
+    print(f'{letter}{k} = {class_}th')
 
     if dec != 0.0:
         first_num = given[int(whole) - 1]
@@ -82,24 +82,24 @@ def main():
 
     while True:
         print('\nYour given: ' + ', '.join(map(lambda x: str(x), given)))
-        choice = input('[A] Quantile \n[B] Decile \n[C] Percentile \n[D] Exit \n> ').lower()
+        choice = input('[Q]uantile \n[D]ecile \n[P]ercentile \n[E]xit \n> ').lower()
 
-        if choice == 'a':
-            k = int(input('Input variable "k": '))
+        if choice == 'q':
+            k = int(input('Input Qx = '))
 
             solve(k, 4, given)
             time.sleep(5)
-        elif choice == 'b':
-            k = int(input('Input variable "k": '))
+        elif choice == 'd':
+            k = int(input('Input Dx = '))
 
             solve(k, 10, given)
             time.sleep(5)
-        elif choice == 'c':
-            k = int(input('Input variable "k": '))
+        elif choice == 'p':
+            k = int(input('Input Px = '))
 
             solve(k, 100, given)
             time.sleep(5)
-        elif choice == 'd':
+        elif choice == 'e':
             print('\nWag ka magpapahuli')
             time.sleep(3)
             sys.exit()
