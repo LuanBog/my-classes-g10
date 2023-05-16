@@ -2,21 +2,30 @@ import time
 import sys
 
 def get_given():
-    given = []
+    # given = []
 
-    print('Enter "go" when the given is finished')
+    # print('Enter "go" when the given is finished')
+    # user_input = input("> ")
+
+    # while True:
+    #     if user_input.lower() != 'go':
+    #         given.append(int(user_input))
+    #         given = sorted(given)
+    #     else:
+    #         return given
+
+    #     print(', '.join(map(lambda x: str(x), given)))
+    #     print('Enter "go" when the given is finished')
+    #     user_input = input("> ")
+
+    print('\nSeparate with commas!')
+    print('E.G: 42, 23, 21, 15, 3, 6, 12, 21 (This will automatically get sorted)')
     user_input = input("> ")
 
-    while True:
-        if user_input.lower() != 'go':
-            given.append(int(user_input))
-            given = sorted(given)
-        else:
-            return given
+    separated = user_input.split(',')
+    numbered = list(map(lambda x: int(x.strip()) , separated))
 
-        print(', '.join(map(lambda x: str(x), given)))
-        print('Enter "go" when the given is finished')
-        user_input = input("> ")
+    return sorted(numbered)
 
 def separate_decimals(float_val):
     splitted = str(float_val).split('.')
