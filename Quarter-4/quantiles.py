@@ -2,22 +2,6 @@ import time
 import sys
 
 def get_given():
-    # given = []
-
-    # print('Enter "go" when the given is finished')
-    # user_input = input("> ")
-
-    # while True:
-    #     if user_input.lower() != 'go':
-    #         given.append(int(user_input))
-    #         given = sorted(given)
-    #     else:
-    #         return given
-
-    #     print(', '.join(map(lambda x: str(x), given)))
-    #     print('Enter "go" when the given is finished')
-    #     user_input = input("> ")
-
     print('\nSeparate with commas!')
     print('E.G: 42, 23, 21, 15, 3, 6, 12, 21 (This will automatically get sorted)')
     user_input = input("> ")
@@ -47,15 +31,26 @@ def separate_decimals(float_val):
 
     if len(splitted) == 2:
         # There is a decimal
-        return (int(splitted[0]), float(f'0.{splitted[1]}'))
+        return (int(splitted[0]), int(splitted[1]))
     else:
         # There is no decimal
         return (int(splitted[0]), 0)
+
+def custom_round(number):
+    whole, dec = separate_decimals(number)
+    first_dec = int(str(dec)[0])
+
+    if first_dec >= 5:
+        return whole + 1
+    else:
+        return whole
 
 def linear_interpolation(k, denominator, given):
     first_answer = (k * (len(given) + 1)) / denominator
     final_answer = 0
     whole, dec = separate_decimals(first_answer)
+
+    dec = float('0.' + str(dec))
 
     letter = None
     if denominator == 4:
@@ -108,21 +103,28 @@ def general_method(k, denominator, given):
     print(f'\n{letter}{k} = kn / {denominator}')
     print(f'{letter}{k} = ({k})({len(given)}) / {denominator}')
     print(f'{letter}{k} = {k * len(given)} / {denominator}')
-    print(f'{letter}{k} = {first_answer}')
+    print(f'{letter}{k} = {ordinalize(first_answer)}')
 
     whole, dec = separate_decimals(first_answer)
 
-    if dec != 0.0:
-        next_number = int(whole) + 1
+    if dec != 0:
+        rounded = custom_round(first_answer)
 
-        print(f'{letter}{k} = {ordinalize(next_number)}')
-        print(f'{letter}{k} = {given[next_number - 1]}')
+        print(f'{letter}{k} = {ordinalize(rounded)}')
+        print(f'{letter}{k} = {given[rounded - 1]}')
     else:
+        final_answer = (given[int(whole) - 1] + given[int(whole)]) / 2
+
         print(f'\n{letter}{k} = ({ordinalize(int(whole))} + {ordinalize(int(whole+1))}) / 2')
         print(f'{letter}{k} = ({given[int(whole) - 1]} + {given[int(whole)]}) / 2')
         print(f'{letter}{k} = {given[int(whole) - 1] + given[int(whole)]} / 2')
-        print(f'{letter}{k} = {(given[int(whole) - 1] + given[int(whole)]) / 2}')
+        print(f'{letter}{k} = {final_answer}')
         
+        i, final_answer_dec = separate_decimals(final_answer)
+
+        if final_answer_dec != 0:
+            print(f'{letter}{k} = {custom_round(final_answer)}')
+
 def mendenhall_sincich_method(k, denominator, given):
     first_answer = (k * (len(given) + 1)) / denominator
     whole, dec = separate_decimals(first_answer)
@@ -167,10 +169,21 @@ def mendenhall_sincich_method(k, denominator, given):
     print(f'{letter}{k} = {ordinalize(first_answer)}')
 
     if round_up_down_median == 'median':
-        print(f'\n{letter}{k} = ({ordinalize(int(whole))} + {ordinalize(int(whole+1))}) / 2')
-        print(f'{letter}{k} = ({given[int(whole) - 1]} + {given[int(whole)]}) / 2')
-        print(f'{letter}{k} = ({given[int(whole) - 1] + given[int(whole)]}) / 2')
-        print(f'{letter}{k} = {(given[int(whole) - 1] + given[int(whole)]) / 2}')
+        if dec == 0:
+            print(f'{letter}{k} = {given[int(whole) - 1]}')
+        else: 
+            final_answer = (given[int(whole) - 1] + given[int(whole)]) / 2
+
+            print(f'\n{letter}{k} = ({ordinalize(int(whole))} + {ordinalize(int(whole+1))}) / 2')
+            print(f'{letter}{k} = ({given[int(whole) - 1]} + {given[int(whole)]}) / 2')
+            print(f'{letter}{k} = {given[int(whole) - 1] + given[int(whole)]} / 2')
+            print(f'{letter}{k} = {final_answer}')
+
+            i, final_answer_dec = separate_decimals(final_answer)
+
+            if final_answer_dec != 0:
+                print(f'{letter}{k} = {custom_round(final_answer)}')
+
     elif round_up_down_median == 'up':
         next_number = int(whole) + 1
 
