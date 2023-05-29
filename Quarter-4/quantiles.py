@@ -168,21 +168,22 @@ def mendenhall_sincich_method(k, denominator, given):
     print(f'{letter}{k} = {k * (len(given) + 1)} / {denominator}')
     print(f'{letter}{k} = {ordinalize(first_answer)}')
 
+    if dec == 0:
+        print(f'{letter}{k} = {given[int(whole) - 1]}')
+        return
+
     if round_up_down_median == 'median':
-        if dec == 0:
-            print(f'{letter}{k} = {given[int(whole) - 1]}')
-        else: 
-            final_answer = (given[int(whole) - 1] + given[int(whole)]) / 2
+        final_answer = (given[int(whole) - 1] + given[int(whole)]) / 2
 
-            print(f'\n{letter}{k} = ({ordinalize(int(whole))} + {ordinalize(int(whole+1))}) / 2')
-            print(f'{letter}{k} = ({given[int(whole) - 1]} + {given[int(whole)]}) / 2')
-            print(f'{letter}{k} = {given[int(whole) - 1] + given[int(whole)]} / 2')
-            print(f'{letter}{k} = {final_answer}')
+        print(f'\n{letter}{k} = ({ordinalize(int(whole))} + {ordinalize(int(whole+1))}) / 2')
+        print(f'{letter}{k} = ({given[int(whole) - 1]} + {given[int(whole)]}) / 2')
+        print(f'{letter}{k} = {given[int(whole) - 1] + given[int(whole)]} / 2')
+        print(f'{letter}{k} = {final_answer}')
 
-            i, final_answer_dec = separate_decimals(final_answer)
+        i, final_answer_dec = separate_decimals(final_answer)
 
-            if final_answer_dec != 0:
-                print(f'{letter}{k} = {custom_round(final_answer)}')
+        if final_answer_dec != 0:
+            print(f'{letter}{k} = {custom_round(final_answer)}')
 
     elif round_up_down_median == 'up':
         next_number = int(whole) + 1
